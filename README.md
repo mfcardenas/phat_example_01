@@ -5,7 +5,8 @@ While doing the activities suffers falls at home.
 
 <table>
 <tr>
- <td>![Older adult Home](https://github.com/mfcardenas/phat_example_oph01/blob/master/img/img_older_people_home.png) </td>
+ <td>
+ <img src="https://github.com/mfcardenas/phat_example_oph01/blob/master/img/img_older_people_home.png" />
  <td>  
 To run the demo
 
