@@ -6,7 +6,7 @@ While doing the activities suffers falls at home.
 <table style="border:none;">
     <tr>
         <td>
-            <img height="80" width="80" src="https://github.com/mfcardenas/phat_examples/blob/master/img/in_progress.png" />
+            <img height="80" width="80" src="https://github.com/mfcardenas/phat_examples/blob/master/img/in_progress.png" title="In progress"/>
         </td>
     <td>  
 To run the demo
