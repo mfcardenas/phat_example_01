@@ -1,0 +1,6 @@
+#JSGF V1.0;
+/**
+ * JSGF Grammar for CMUSphinx
+ */
+grammar simple;
+public <sentence> = (i need help | where are you | look at me );
