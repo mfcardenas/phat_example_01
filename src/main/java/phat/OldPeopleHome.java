@@ -1,9 +1,8 @@
+package phat;
+
 import java.util.logging.Logger;
 import java.util.logging.Level;
 
-import phat.ArgumentProcessor;
-import phat.PHATInitializer;
-import phat.PHATInterface;
 import phat.agents.Agent;
 import phat.agents.HumanAgent;
 import phat.agents.automaton.Automaton;
@@ -22,19 +21,14 @@ import phat.agents.automaton.conditions.TimerFinishedCondition;
 import phat.agents.automaton.uses.UseDoorbellAutomaton;
 import phat.agents.commands.ActivateActuatorEventsLauncherCommand;
 import phat.agents.commands.ActivateCallStateEventsLauncherCommand;
-import phat.agents.commands.ActivateWordsHeardEventsLauncherCommand;
 import phat.body.BodiesAppState;
 import phat.body.commands.*;
-import phat.body.sensing.hearing.GrammarFacilitator;
 import phat.config.AgentConfigurator;
 import phat.config.BodyConfigurator;
 import phat.config.DeviceConfigurator;
 import phat.config.HouseConfigurator;
 import phat.config.ServerConfigurator;
 import phat.config.WorldConfigurator;
-import phat.server.commands.DisplayAVDScreenCommand;
-import phat.server.commands.SetAndroidEmulatorCommand;
-import phat.server.commands.StartActivityCommand;
 import phat.structures.houses.HouseFactory;
 import phat.world.WorldAppState;
 
@@ -149,9 +143,9 @@ public class OldPeopleHome implements PHATInitializer {
         FallAutomaton fall = new FallAutomaton(relative, "TripOver");
         fall.setFinishCondition(new TimerFinishedCondition(0, 0, 5));
 
-        SayAutomaton say1 = new SayAutomaton(relative, "SayGoodMorning", "i need help", 0.5f);
-        SayAutomaton say2 = new SayAutomaton(relative, "SayGoodMorning", "where are you", 0.5f);
-        SayAutomaton say3 = new SayAutomaton(relative, "SayGoodMorning", "look at me", 0.5f);
+        SayAutomaton say1 = new SayAutomaton(relative, "SayGoodMorning", "--> i need help", 0.5f);
+        SayAutomaton say2 = new SayAutomaton(relative, "SayGoodMorning", "--> where are you", 0.5f);
+        SayAutomaton say3 = new SayAutomaton(relative, "SayGoodMorning", "--> look at me", 0.5f);
 
         StandUpAutomaton standUp3 = new StandUpAutomaton(relative, "StandUp");
 
