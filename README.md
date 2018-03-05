@@ -13,7 +13,7 @@ To run the demo
 
 ```
 mvn clean compile
-mvn exec:java -Dexec.mainClass=phat.OldPeopleHome
+mvn exec:java -Dexec.mainClass=OldPeopleHome
 ```
 In case of running into memory problems
 ```
