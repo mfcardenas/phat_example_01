@@ -25,7 +25,7 @@ Alternatively, you can run the startSim.sh file if you are working on Linux.
 ```
 $>./startSim.sh
 ```
-    </td>
+ </td>
     <td>
         <img src="https://github.com/mfcardenas/phat_example_oph01/blob/master/img/img_older_people_home.png" />
     </td>
