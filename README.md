@@ -4,13 +4,16 @@ Older adult who lives alone in his home and performs different daily activities.
 While doing the activities suffers falls at home.
 
 <table style="border:none;">
-<tr>
+    <tr>
+        <td>
+            <img height="80" width="80" src="https://github.com/mfcardenas/phat_examples/blob/master/img/in_progress.png" title="In progress"/>
+        </td>
     <td>  
 To run the demo
 
 ```
 mvn clean compile
-mvn exec:java -Dexec.mainClass=phat.OldPeopleHome
+mvn exec:java -Dexec.mainClass=OldPeopleHome
 ```
 In case of running into memory problems
 ```
