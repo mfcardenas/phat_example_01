@@ -1,8 +1,9 @@
-package phat;
-
 import java.util.logging.Logger;
 import java.util.logging.Level;
 
+import phat.ArgumentProcessor;
+import phat.PHATInitializer;
+import phat.PHATInterface;
 import phat.agents.Agent;
 import phat.agents.HumanAgent;
 import phat.agents.automaton.Automaton;
@@ -21,8 +22,14 @@ import phat.agents.automaton.conditions.TimerFinishedCondition;
 import phat.agents.automaton.uses.UseDoorbellAutomaton;
 import phat.agents.commands.ActivateActuatorEventsLauncherCommand;
 import phat.agents.commands.ActivateCallStateEventsLauncherCommand;
+import phat.agents.commands.ActivateWordsHeardEventsLauncherCommand;
 import phat.body.BodiesAppState;
-import phat.body.commands.*;
+import phat.body.commands.SetBodyHeightCommand;
+import phat.body.commands.SetBodyInHouseSpaceCommand;
+import phat.body.commands.SetStoopedBodyCommand;
+import phat.body.commands.TremblingHandCommand;
+import phat.body.commands.TremblingHeadCommand;
+import phat.body.sensing.hearing.GrammarFacilitator;
 import phat.config.AgentConfigurator;
 import phat.config.BodyConfigurator;
 import phat.config.DeviceConfigurator;
@@ -32,27 +39,25 @@ import phat.config.WorldConfigurator;
 import phat.structures.houses.HouseFactory;
 import phat.world.WorldAppState;
 
-
 /**
- * Old People home.
+ *
  * @author mcardenas
  */
 public class OldPeopleHome implements PHATInitializer {
 
     public static void main(String[] args) {
-        String[] a = {"-record"};
-        OldPeopleHome sim = new OldPeopleHome();
-        GUIPHATInterface phat = new GUIPHATInterface(sim, new GUIArgumentProcessor(a));
+        String[] a = {"-ml"};
+        phat.MainPHATSimulation sim = new phat.MainPHATSimulation();
+        PHATInterface phat = new PHATInterface(sim, new ArgumentProcessor(a));
         phat.setSeed(0);
         phat.setDisplayHeight(800);
         phat.setDisplayWidth(480);
-        phat.setTittle("Monitoring Old People");
         phat.start();
     }
 
     @Override
     public void initWorld(WorldConfigurator worldConfig) {
-        worldConfig.setTime(2018, 2, 3, 14, 0, 0);
+        worldConfig.setTime(2014, 2, 3, 14, 0, 0);
         worldConfig.setTimeVisible(true);
         worldConfig.setLandType(WorldAppState.LandType.Grass);
     }
@@ -70,13 +75,13 @@ public class OldPeopleHome implements PHATInitializer {
         bodyConfig.runCommand(new TremblingHeadCommand("Relative", true));
         bodyConfig.runCommand(new SetStoopedBodyCommand("Relative", true));
         bodyConfig.runCommand(new TremblingHandCommand("Relative", true, true));
-        bodyConfig.runCommand(new BodyLabelCommand("Relative", true));
-        SetCameraToBodyCommand setCameraToBodyCommand = new SetCameraToBodyCommand("Relative");
+        //bodyConfig.runCommand(new BodyLabelCommand("Relative", true));
+        /*SetCameraToBodyCommand setCameraToBodyCommand = new SetCameraToBodyCommand("Relative");
         setCameraToBodyCommand.setFront(true);
         setCameraToBodyCommand.setDistance(3f);
         setCameraToBodyCommand.setHeight(15f);
         bodyConfig.runCommand(setCameraToBodyCommand);
-        bodyConfig.runCommand(new SetPCListenerToBodyCommand("Relative"));
+        bodyConfig.runCommand(new SetPCListenerToBodyCommand("Relative"));*/
         bodyConfig.runCommand(new SetBodyHeightCommand("Relative", 1.7f));
     }
 
@@ -88,14 +93,14 @@ public class OldPeopleHome implements PHATInitializer {
 
     @Override
     public void initServer(ServerConfigurator deviceConfig) {
-//        deviceConfig.runCommand(new SetAndroidEmulatorCommand("Smartphone1", "Smartphone1", "emulator-5554"));
-//        //deviceConfig.runCommand(new StartActivityCommand("Smartphone1", "phat.android.apps", "CameraCaptureActivity"));
-//
-//        deviceConfig.runCommand(new StartActivityCommand("Smartphone1", "phat.android.apps.vibrator", "VibratorTestActivity"));
-//
-//        DisplayAVDScreenCommand displayCommand = new DisplayAVDScreenCommand("Smartphone1", "Smartphone1");
-//        displayCommand.setFrecuency(0.5f);
-//        deviceConfig.runCommand(displayCommand);
+        /*deviceConfig.runCommand(new SetAndroidEmulatorCommand("Smartphone1", "Smartphone1", "emulator-5554"));
+        //deviceConfig.runCommand(new StartActivityCommand("Smartphone1", "phat.android.apps", "CameraCaptureActivity"));
+
+        deviceConfig.runCommand(new StartActivityCommand("Smartphone1", "phat.android.apps.vibrator", "VibratorTestActivity"));
+
+        DisplayAVDScreenCommand displayCommand = new DisplayAVDScreenCommand("Smartphone1", "Smartphone1");
+        displayCommand.setFrecuency(0.5f);
+        deviceConfig.runCommand(displayCommand);*/
     }
 
     @Override
@@ -144,9 +149,9 @@ public class OldPeopleHome implements PHATInitializer {
         FallAutomaton fall = new FallAutomaton(relative, "TripOver");
         fall.setFinishCondition(new TimerFinishedCondition(0, 0, 5));
 
-        SayAutomaton say1 = new SayAutomaton(relative, "SayGoodMorning", "--> i need help", 0.5f);
-        SayAutomaton say2 = new SayAutomaton(relative, "SayGoodMorning", "--> where are you", 0.5f);
-        SayAutomaton say3 = new SayAutomaton(relative, "SayGoodMorning", "--> look at me", 0.5f);
+        SayAutomaton say1 = new SayAutomaton(relative, "SayGoodMorning", "i need help", 0.5f);
+        SayAutomaton say2 = new SayAutomaton(relative, "SayGoodMorning", "where are you", 0.5f);
+        SayAutomaton say3 = new SayAutomaton(relative, "SayGoodMorning", "look at me", 0.5f);
 
         StandUpAutomaton standUp3 = new StandUpAutomaton(relative, "StandUp");
 
@@ -179,29 +184,29 @@ public class OldPeopleHome implements PHATInitializer {
         agentsConfig.add(relative);
 
         System.setProperty("java.util.logging.config.class", "");
-        Logger.getLogger("").setLevel(Level.ALL);
+        Logger.getLogger("").setLevel(Level.OFF);
 
         agentsConfig.runCommand(new ActivateActuatorEventsLauncherCommand(null));
         agentsConfig.runCommand(new ActivateCallStateEventsLauncherCommand(null));
-//        ActivateWordsHeardEventsLauncherCommand awhelc = new ActivateWordsHeardEventsLauncherCommand("Relative", null);
-//        awhelc.addWord("i");
-//        awhelc.addWord("need");
-//        awhelc.addWord("help");
-//        awhelc.addWord("where");
-//        awhelc.addWord("are");
-//        awhelc.addWord("you");
-//        awhelc.addWord("look");
-//        awhelc.addWord("at");
-//        awhelc.addWord("me");
+        ActivateWordsHeardEventsLauncherCommand awhelc = new ActivateWordsHeardEventsLauncherCommand("Relative", null);
+        awhelc.addWord("i");
+        awhelc.addWord("need");
+        awhelc.addWord("help");
+        awhelc.addWord("where");
+        awhelc.addWord("are");
+        awhelc.addWord("you");
+        awhelc.addWord("look");
+        awhelc.addWord("at");
+        awhelc.addWord("me");
 
-//        GrammarFacilitator grammarFacilitator = new GrammarFacilitator(System.getProperty("user.dir"), "basic");
-//        grammarFacilitator.add("i need help");
-//        grammarFacilitator.add("where are you");
-//        grammarFacilitator.add("look at me");
-//        grammarFacilitator.createFile();
-//        awhelc.setGrammarFacilitator(grammarFacilitator);
+        GrammarFacilitator grammarFacilitator = new GrammarFacilitator(System.getProperty("user.dir"), "basic");
+        grammarFacilitator.add("i need help");
+        grammarFacilitator.add("where are you");
+        grammarFacilitator.add("look at me");
+        grammarFacilitator.createFile();
+        awhelc.setGrammarFacilitator(grammarFacilitator);
 
-//        agentsConfig.runCommand(awhelc);
+        agentsConfig.runCommand(awhelc);
     }
 
     @Override
